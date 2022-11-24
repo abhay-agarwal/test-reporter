@@ -1,7 +1,7 @@
-name: Test Reporter
+name: Test Reporter with Action Output
 description: |
   Shows test results in GitHub UI: .NET (xUnit, NUnit, MSTest), Dart, Flutter, Java (JUnit), JavaScript (JEST, Mocha)
-author: Michal Dorner <dorner.michal@gmail.com>
+author: Neung Ryu <ababc100564@gmail.com>
 inputs:
   artifact:
     description: Name or regex of artifact containing test results
