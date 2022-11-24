@@ -405,7 +405,7 @@ class TestReporter {
             const { pull_request } = github.context.payload;
             if (pull_request !== undefined && pull_request !== null) {
                 core.info(`Attach test summary as comment on pull-request`);
-                yield this.octokit.rest.issues.createComment(Object.assign(Object.assign({}, github.context.repo), { issue_number: pull_request.number, body: `## TEST RESULT SUMMARY ${summary}` }));
+                yield this.octokit.rest.issues.createComment(Object.assign(Object.assign({}, github.context.repo), { issue_number: pull_request.number, body: `# 🚀 TEST RESULT SUMMARY ${summary}` }));
             }
             core.info(`Check run create response: ${resp.status}`);
             core.info(`Check run URL: ${resp.data.url}`);
