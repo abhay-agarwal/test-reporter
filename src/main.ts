@@ -170,7 +170,7 @@ class TestReporter {
     const {listSuites, listTests, onlySummary} = this
     const baseUrl = createResp.data.html_url as string
     const summary = getReport(results, {listSuites, listTests, baseUrl, onlySummary})
-    core.setOutput('summary', summary);
+    core.setOutput('summary', summary)
 
     core.info('Creating annotations')
     const annotations = getAnnotations(results, this.maxAnnotations)
@@ -191,13 +191,15 @@ class TestReporter {
       ...github.context.repo
     })
 
-    core.info(`Attach test summary as comment on pull-request`);
-    await this.octokit.rest.issues.createComment({
-      ...github.context.repo,
-      issue_number: github.context.payload.pull_request.number,
-      body: `## TEST RESULT SUMMARY ${summary}`
-    });
-
+    const {pull_request} = github.context.payload
+    if (pull_request !== undefined && pull_request !== null) {
+      core.info(`Attach test summary as comment on pull-request`)
+      await this.octokit.rest.issues.createComment({
+        ...github.context.repo,
+        issue_number: pull_request.number,
+        body: `## TEST RESULT SUMMARY ${summary}`
+      })
+    }
     core.info(`Check run create response: ${resp.status}`)
     core.info(`Check run URL: ${resp.data.url}`)
     core.info(`Check run HTML: ${resp.data.html_url}`)
