@@ -197,7 +197,7 @@ class TestReporter {
       await this.octokit.rest.issues.createComment({
         ...github.context.repo,
         issue_number: pull_request.number,
-        body: `## TEST RESULT SUMMARY ${summary}`
+        body: `# 🚀 TEST RESULT SUMMARY ${summary}`
       })
     }
     core.info(`Check run create response: ${resp.status}`)
