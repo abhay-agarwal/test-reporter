@@ -1,5 +1,9 @@
 # Test Reporter
 
+This Github Action is modified version of [Test Reporter](https://github.com/dorny/test-reporter) to exporting test summary as github action output (Work in Progress: and automatically add comment on related PR).
+
+===================================================================
+
 This [Github Action](https://github.com/features/actions) displays test results from popular testing frameworks directly in GitHub.
 
 ✔️ Parses test results in XML or JSON format and creates nice report as Github Check Run
