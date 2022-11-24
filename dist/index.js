@@ -390,6 +390,8 @@ class TestReporter {
             const { listSuites, listTests, onlySummary } = this;
             const baseUrl = createResp.data.html_url;
             const summary = (0, get_report_1.getReport)(results, { listSuites, listTests, baseUrl, onlySummary });
+            core.setOutput('summary', summary);
+            core.info(`summary`);
             core.info('Creating annotations');
             const annotations = (0, get_annotations_1.getAnnotations)(results, this.maxAnnotations);
             const isFailed = results.some(tr => tr.result === 'failed');
