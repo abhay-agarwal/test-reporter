@@ -1,6 +1,6 @@
 name: Test Reporter with PR Comment
 description: |
-  Shows test results in GitHub UI: .NET (xUnit, NUnit, MSTest), Dart, Flutter, Java (JUnit), JavaScript (JEST, Mocha) and comments it on pull-request.
+  Modified version of dorny/test-reporter which can report test summary on pull-request.
 author: Neung Ryu <ababc100564@gmail.com>
 inputs:
   artifact:
