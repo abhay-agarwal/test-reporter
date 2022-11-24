@@ -391,7 +391,6 @@ class TestReporter {
             const baseUrl = createResp.data.html_url;
             const summary = (0, get_report_1.getReport)(results, { listSuites, listTests, baseUrl, onlySummary });
             core.setOutput('summary', summary);
-            core.info(`${summary}`);
             core.info('Creating annotations');
             const annotations = (0, get_annotations_1.getAnnotations)(results, this.maxAnnotations);
             const isFailed = results.some(tr => tr.result === 'failed');
@@ -403,6 +402,11 @@ class TestReporter {
                     summary,
                     annotations
                 } }, github.context.repo));
+            const { pull_request } = github.context.payload;
+            if (pull_request !== undefined && pull_request !== null) {
+                core.info(`Attach test summary as comment on pull-request`);
+                yield this.octokit.rest.issues.createComment(Object.assign(Object.assign({}, github.context.repo), { issue_number: pull_request.number, body: `## TEST RESULT SUMMARY ${summary}` }));
+            }
             core.info(`Check run create response: ${resp.status}`);
             core.info(`Check run URL: ${resp.data.url}`);
             core.info(`Check run HTML: ${resp.data.html_url}`);
