@@ -370,6 +370,7 @@ class TestReporter {
         });
     }
     createReport(parser, name, files) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             if (files.length === 0) {
                 core.warning(`No file matches path ${this.path}`);
@@ -404,8 +405,17 @@ class TestReporter {
                 } }, github.context.repo));
             const { pull_request } = github.context.payload;
             if (pull_request !== undefined && pull_request !== null) {
-                core.info(`Attach test summary as comment on pull-request`);
-                yield this.octokit.rest.issues.createComment(Object.assign(Object.assign({}, github.context.repo), { issue_number: pull_request.number, body: `# 🚀 TEST RESULT SUMMARY ${summary}` }));
+                core.info(`Looking for pre-existing test summary`);
+                const commentList = yield this.octokit.rest.issues.listComments(Object.assign(Object.assign({}, github.context.repo), { issue_number: pull_request.number }));
+                const targetId = (_a = commentList.data.find(el => { var _a; return (_a = el.body) === null || _a === void 0 ? void 0 : _a.startsWith('# 🚀 TEST RESULT SUMMARY'); })) === null || _a === void 0 ? void 0 : _a.id;
+                if (targetId !== undefined) {
+                    core.info(`Updating test summary as comment on pull-request`);
+                    yield this.octokit.rest.issues.createComment(Object.assign(Object.assign({}, github.context.repo), { issue_number: pull_request.number, comment_id: targetId, body: `# 🚀 TEST RESULT SUMMARY ${summary}` }));
+                }
+                else {
+                    core.info(`Attaching test summary as comment on pull-request`);
+                    yield this.octokit.rest.issues.createComment(Object.assign(Object.assign({}, github.context.repo), { issue_number: pull_request.number, body: `# 🚀 TEST RESULT SUMMARY ${summary}` }));
+                }
             }
             core.info(`Check run create response: ${resp.status}`);
             core.info(`Check run URL: ${resp.data.url}`);
