@@ -410,7 +410,7 @@ class TestReporter {
                 const targetId = (_a = commentList.data.find(el => { var _a; return (_a = el.body) === null || _a === void 0 ? void 0 : _a.startsWith('# 🚀 TEST RESULT SUMMARY'); })) === null || _a === void 0 ? void 0 : _a.id;
                 if (targetId !== undefined) {
                     core.info(`Updating test summary as comment on pull-request`);
-                    yield this.octokit.rest.issues.createComment(Object.assign(Object.assign({}, github.context.repo), { issue_number: pull_request.number, comment_id: targetId, body: `# 🚀 TEST RESULT SUMMARY ${summary}` }));
+                    yield this.octokit.rest.issues.updateComment(Object.assign(Object.assign({}, github.context.repo), { issue_number: pull_request.number, comment_id: targetId, body: `# 🚀 TEST RESULT SUMMARY ${summary}` }));
                 }
                 else {
                     core.info(`Attaching test summary as comment on pull-request`);

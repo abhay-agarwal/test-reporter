@@ -201,7 +201,7 @@ class TestReporter {
       const targetId = commentList.data.find(el => el.body?.startsWith('# 🚀 TEST RESULT SUMMARY'))?.id
       if (targetId !== undefined) {
         core.info(`Updating test summary as comment on pull-request`)
-        await this.octokit.rest.issues.createComment({
+        await this.octokit.rest.issues.updateComment({
           ...github.context.repo,
           issue_number: pull_request.number,
           comment_id: targetId,
