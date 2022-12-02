@@ -193,12 +193,28 @@ class TestReporter {
 
     const {pull_request} = github.context.payload
     if (pull_request !== undefined && pull_request !== null) {
-      core.info(`Attach test summary as comment on pull-request`)
-      await this.octokit.rest.issues.createComment({
+      core.info(`Looking for pre-existing test summary`)
+      const commentList = await this.octokit.rest.issues.listComments({
         ...github.context.repo,
-        issue_number: pull_request.number,
-        body: `# 🚀 TEST RESULT SUMMARY ${summary}`
+        issue_number: pull_request.number
       })
+      const targetId = commentList.data.find(el => el.body?.startsWith('# 🚀 TEST RESULT SUMMARY'))?.id
+      if (targetId !== undefined) {
+        core.info(`Updating test summary as comment on pull-request`)
+        await this.octokit.rest.issues.createComment({
+          ...github.context.repo,
+          issue_number: pull_request.number,
+          comment_id: targetId,
+          body: `# 🚀 TEST RESULT SUMMARY ${summary}`
+        })
+      } else {
+        core.info(`Attaching test summary as comment on pull-request`)
+        await this.octokit.rest.issues.createComment({
+          ...github.context.repo,
+          issue_number: pull_request.number,
+          body: `# 🚀 TEST RESULT SUMMARY ${summary}`
+        })
+      }
     }
     core.info(`Check run create response: ${resp.status}`)
     core.info(`Check run URL: ${resp.data.url}`)
